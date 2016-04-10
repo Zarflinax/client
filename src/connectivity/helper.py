@@ -156,8 +156,14 @@ class ConnectivityHelper(QObject):
         from client import ClientState
         state, addr = msg['args']
         if state == 'BLOCKED':
-            self._logger.warning("Outbound traffic is blocked")
-            QtGui.QMessageBox.warning(None, "Traffic Blocked", "Your outbound traffic appears to be blocked. Try restarting FAF. <br/> If the error persists please contact a moderator and send your logs. <br/> We are already working on a solution to this problem.")
+            self._logger.warning("Outbound traffic to {} is blocked".format(self._port)
+            QtGui.QMessageBox.warning(
+                None, 
+                "Traffic Blocked", 
+                ("Your outbound traffic to {}  appears to be blocked. Try restarting FAF. <br/>"
+                "If the error persists please contact a moderator and send your logs. <br/>"
+                "We are already working on a solution to this problem.").format(self._port),
+            )
             self._client.state = ClientState.NONE
         else:
             host, port = addr.split(':')
